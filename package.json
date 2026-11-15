@@ -1,0 +1,21 @@
+{
+  "name": "snip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev --workspace=@repo/api",
+    "dev:web": "npm run dev --workspace=@repo/web",
+    "build": "npm run build --workspaces --if-present"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "@tanstack/react-query": "^5.107.1",
+    "zod": "^4.6.7"
+  }
+}

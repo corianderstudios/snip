@@ -1,0 +1,21 @@
+# compose.yaml  (repo root)
+
+services:
+  db:
+    image: postgres:17 # pinned: "postgres" alone means "whatever's latest today"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: snip
+      POSTGRES_PASSWORD: snip # fine locally; never a real secret in a committed file
+      POSTGRES_DB: snip
+    ports:
+      - "5432:5432" # lets Node on your Mac reach the container
+    volumes:
+      - pgdata:/var/lib/postgresql/data # data survives `docker compose down`
+    healthcheck: # "is it accepting connections yet?"
+      test: ["CMD-SHELL", "pg_isready -U snip"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  pgdata:
