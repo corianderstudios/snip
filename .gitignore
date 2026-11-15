@@ -1,1 +1,27 @@
-node_modules, dist, .env
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.vite/
+
+# Environment — never commit real values
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test and tooling output
+coverage/
+playwright-report/
+test-results/
+
+# Editor and OS
+.DS_Store
+.vscode/
+.idea/
