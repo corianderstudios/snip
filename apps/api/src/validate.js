@@ -16,3 +16,12 @@ export function validateBody(schema) {
     next();
   };
 }
+
+export function validateParams(schema) {
+  return (req, res, next) => {
+    const parsed = schema.safeParse(req.params);
+    if (!parsed.success) return res.status(404).end();
+    req.params = parsed.data;
+    next();
+  };
+}

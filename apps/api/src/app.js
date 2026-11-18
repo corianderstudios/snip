@@ -1,8 +1,8 @@
 import express from "express";
-import { requestLogger } from "./logger.js";
 import { randomBytes } from "node:crypto";
-import { LinkInput } from "@repo/shared";
-import { validateBody } from "./validate.js";
+import { LinkInput, IdParam } from "@repo/shared";
+import { requestLogger } from "./logger.js";
+import { validateBody, validateParams } from "./validate.js";
 import { db } from "./db.js";
 
 function generateCode() {
@@ -38,7 +38,7 @@ export function buildApp() {
           `INSERT INTO links (link, short_code, user_id)
              VALUES ($1, $2, $3)
              RETURNING link_id, link, short_code, created_at`,
-          [url, generateCode, userId],
+          [url, generateCode(), userId],
         );
 
         const row = rows[0];
@@ -57,14 +57,29 @@ export function buildApp() {
       .status(503)
       .json({ error: "Could not allocate a short code, try again" });
   });
-  app.delete("/api/links", (req, res) => {});
+  app.delete(
+    "/api/links/:linkId",
+    validateParams(IdParam),
+    async (req, res) => {
+      const { linkId } = req.params;
+      const userId = 1;
+      const { rowCount } = await db.query(
+        `DELETE FROM LINKS 
+      WHERE link_id=$1 AND user_id=$2
+      `,
+        [linkId, userId],
+      );
 
-  app.get("/api/links", (req, res) => {});
+      if (rowCount === 0) return res.status(404).end();
 
-  //   app.get("/api/db-check", async (req, res) => {
-  //     const { rows } = await db.query("SELECT now() AS time");
-  //     res.json({ time: rows[0].time });
-  //   });
+      res.status(204).end();
+    },
+  );
+
+  app.get("/api/links", async (req, res) => {
+    const { rows } = await db.query("SELECT * FROM links");
+    res.json({ links: rows });
+  });
 
   app.use((err, req, res, next) => {
     console.error(JSON.stringify({ level: "error", msg: err.message }));

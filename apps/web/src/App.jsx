@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
-import { API_URL, formatGreeting } from "@repo/shared";
 
 export default function App() {
-  const [apiMessage, setApiMessage] = useState("");
+  const [value, setValue] = useState("");
 
-  useEffect(() => {
-    fetch(`${API_URL}/api/hello`)
-      .then((res) => res.json())
-      .then((data) => setApiMessage(data.message));
-  }, []);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setValue("");
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <div>
-      <h1>{formatGreeting("React")}</h1>
-      <p>Server says: {apiMessage}</p>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="short-url">Enter url: </label>
+        <input
+          id="short-url"
+          required
+          type="url"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }
