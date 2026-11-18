@@ -5,6 +5,9 @@
   "type": "module",
   "main": "./index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./src/index.js"
+  },
+  "dependencies": {
+    "zod": "^4.0.0"
   }
 }
