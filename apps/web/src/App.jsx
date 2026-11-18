@@ -1,28 +1,36 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { api } from "./api";
+import Link from "./components/Link";
+import URLInput from "./components/URLInput";
 
 export default function App() {
-  const [value, setValue] = useState("");
+  const [urlValue, setUrlValue] = useState("");
+  const [formattedLinks, setFormattedLinks] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setValue("");
+  const handleCreateURL = async () => {
+    setUrlValue("");
+    await api.createLink(urlValue).then((data) => {
+      const { url, shortCode } = data;
+      const urlString = new URL(url);
+
+      const newLink = {
+        url,
+        formattedUrl: `${urlString.hostname}/${shortCode}`,
+      };
+      setFormattedLinks([...formattedLinks, newLink]);
+    });
   };
-
-  useEffect(() => {}, []);
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="short-url">Enter url: </label>
-        <input
-          id="short-url"
-          required
-          type="url"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <button type="submit">Submit</button>
-      </form>
+      <URLInput
+        handleCreateURL={handleCreateURL}
+        urlValue={urlValue}
+        setUrlValue={setUrlValue}
+      />
+      {formattedLinks.map(({ url, formattedUrl }) => (
+        <Link key={crypto.randomUUID()} url={url} formattedUrl={formattedUrl} />
+      ))}
     </div>
   );
 }

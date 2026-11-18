@@ -4,6 +4,7 @@ import { LinkInput, IdParam } from "@repo/shared";
 import { requestLogger } from "./logger.js";
 import { validateBody, validateParams } from "./validate.js";
 import { db } from "./db.js";
+import { getDevUserId } from "./devUser.js";
 
 function generateCode() {
   return randomBytes(6).toString("base64url");
@@ -30,7 +31,7 @@ export function buildApp() {
 
   app.post("/api/links", validateBody(LinkInput), async (req, res) => {
     const { url } = req.body;
-    const userId = 1;
+    const userId = await getDevUserId();
 
     for (let attempt = 0; attempt < 5; attempt++) {
       try {
