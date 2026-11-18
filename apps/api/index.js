@@ -9,4 +9,4 @@ app.get("/api/hello", (req, res) => {
   res.json({ message: formatGreeting("API") });
 });
 
-app.listen(4000, () => console.log("API running on http://localhost:4000"));
+app.listen(4000, () => console.log("API running on http://localhost:3000"));
