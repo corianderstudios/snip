@@ -28,9 +28,16 @@ export default function App() {
         urlValue={urlValue}
         setUrlValue={setUrlValue}
       />
-      {formattedLinks.map(({ url, formattedUrl }) => (
-        <Link key={crypto.randomUUID()} url={url} formattedUrl={formattedUrl} />
-      ))}
+
+      <ul>
+        {formattedLinks.map(({ url, formattedUrl }) => (
+          <Link
+            key={crypto.randomUUID()}
+            url={url}
+            formattedUrl={formattedUrl}
+          />
+        ))}
+      </ul>
     </div>
   );
 }

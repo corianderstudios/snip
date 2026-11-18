@@ -1,8 +1,8 @@
 export default function Link({ url, formattedUrl }) {
   return (
-    <div>
+    <li>
       <a href={url}>{formattedUrl}</a>
       <button>X</button>
-    </div>
+    </li>
   );
 }
