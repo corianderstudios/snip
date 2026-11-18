@@ -1,22 +1,19 @@
-import React from "react";
-
-export default function URLInput() {
-  const [value, setValue] = React.useState("");
-
+export default function URLInput({ handleCreateURL, urlValue, setUrlValue }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    setValue("");
+    setUrlValue("");
+    handleCreateURL(urlValue);
   };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="short-url">Enter url: </label>
       <input
         id="short-url"
         required
         type="url"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={urlValue}
+        onChange={(e) => setUrlValue(e.target.value)}
       />
       <button type="submit">Submit</button>
     </form>

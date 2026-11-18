@@ -13,6 +13,8 @@ export const Link = z.object({
   createdAt: z.string(),
 });
 
+export const LinkList = z.array(Link);
+
 export const IdParam = z.object({
   id: z.coerce.number().int().positive(),
 });
