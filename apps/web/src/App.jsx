@@ -23,6 +23,8 @@ export default function App() {
 
   return (
     <div>
+      <h1>Snip</h1>
+      <h3>link shortener</h3>
       <URLInput
         handleCreateURL={handleCreateURL}
         urlValue={urlValue}
