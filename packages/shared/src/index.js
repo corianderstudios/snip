@@ -16,5 +16,5 @@ export const Link = z.object({
 export const LinkList = z.array(Link);
 
 export const IdParam = z.object({
-  id: z.coerce.number().int().positive(),
+  linkId: z.coerce.number().int().positive(),
 });

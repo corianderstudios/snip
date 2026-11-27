@@ -63,15 +63,19 @@ export function buildApp() {
     validateParams(IdParam),
     async (req, res) => {
       const { linkId } = req.params;
-      const userId = 1;
+      const userId = await getDevUserId();
+
       const { rowCount } = await db.query(
-        `DELETE FROM LINKS 
-      WHERE link_id=$1 AND user_id=$2
-      `,
+        `DELETE FROM links
+          WHERE link_id=$1 AND user_id=$2`,
         [linkId, userId],
       );
 
-      if (rowCount === 0) return res.status(404).end();
+      console.log("delete", { linkId, userId, rowCount });
+
+      if (rowCount === 0) {
+        return res.status(404).end();
+      }
 
       res.status(204).end();
     },
