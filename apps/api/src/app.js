@@ -58,6 +58,7 @@ export function buildApp() {
           id: String(row.link_id),
           url: row.link,
           shortCode: row.short_code,
+          shortUrl: `${config.PUBLIC_BASE_URL}/${row.short_code}`,
           createdAt: row.created_at,
         });
       } catch (error) {

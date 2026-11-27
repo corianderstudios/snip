@@ -44,12 +44,12 @@ export default function App() {
         setUrlValue={setUrlValue}
       />
       <ul>
-        {formattedLinks.map(({ id, url, formattedUrl }) => (
+        {formattedLinks.map(({ id, url, shortUrl }) => (
           <Link
             key={id}
             id={id}
             url={url}
-            formattedUrl={formattedUrl}
+            formattedUrl={shortUrl}
             setFormattedLinks={setFormattedLinks}
           />
         ))}
