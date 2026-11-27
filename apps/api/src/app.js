@@ -10,6 +10,15 @@ function generateCode() {
   return randomBytes(6).toString("base64url");
 }
 
+function toLink(row) {
+  return {
+    id: String(row.link_id),
+    url: row.link,
+    shortCode: row.short_code,
+    createdAt: row.created_at,
+  };
+}
+
 export function buildApp() {
   const app = express();
 
@@ -82,8 +91,17 @@ export function buildApp() {
   );
 
   app.get("/api/links", async (req, res) => {
-    const { rows } = await db.query("SELECT * FROM links");
-    res.json({ links: rows });
+    const userId = await getDevUserId();
+
+    const { rows } = await db.query(
+      `SELECT link_id, link, short_code, created_at
+     FROM links
+     WHERE user_id = $1
+     ORDER BY created_at DESC`,
+      [userId],
+    );
+
+    res.json(rows.map(toLink));
   });
 
   app.use((err, req, res, next) => {
