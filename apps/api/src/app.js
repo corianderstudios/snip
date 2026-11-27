@@ -5,6 +5,7 @@ import { requestLogger } from "./logger.js";
 import { validateBody, validateParams } from "./validate.js";
 import { db } from "./db.js";
 import { getDevUserId } from "./devUser.js";
+import { config } from "./config.js";
 
 function generateCode() {
   return randomBytes(6).toString("base64url");
@@ -15,6 +16,7 @@ function toLink(row) {
     id: String(row.link_id),
     url: row.link,
     shortCode: row.short_code,
+    shortUrl: `${config.PUBLIC_BASE_URL}/${row.short_code}`,
     createdAt: row.created_at,
   };
 }
@@ -102,6 +104,38 @@ export function buildApp() {
     );
 
     res.json(rows.map(toLink));
+  });
+
+  app.get("/:code", async (req, res) => {
+    const { code } = req.params;
+    const { rows } = await db.query(
+      "SELECT link_id, link FROM links WHERE short_code = $1",
+      [code],
+    );
+
+    if (rows.length === 0) return res.status(404).send("Link not found");
+
+    res.redirect(302, rows[0].link);
+
+    db.query("INSERT INTO clicks (link_id) VALUES ($1)", [
+      rows[0].link_id,
+    ]).catch((err) =>
+      console.error(
+        JSON.stringify({
+          level: "error",
+          msg: "click insert failed",
+          detail: err.message,
+        }),
+      ),
+    );
+
+    res.status(201).json({
+      id: String(row.link_id),
+      url: row.link,
+      shortCode: row.short_code,
+      shortUrl: `${config.PUBLIC_BASE_URL}/${row.short_code}`,
+      createdAt: row.created_at,
+    });
   });
 
   app.use((err, req, res, next) => {

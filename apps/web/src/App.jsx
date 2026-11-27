@@ -4,11 +4,9 @@ import Link from "./components/Link";
 import URLInput from "./components/URLInput";
 
 const normalizeData = (data) => {
-  const urlString = new URL(data.url);
   return {
     id: data.id,
-    url: data.url,
-    formattedUrl: `${urlString.hostname}/${data.shortCode}`,
+    shortUrl: data.shortUrl,
   };
 };
 
@@ -19,12 +17,10 @@ export default function App() {
   const handleCreateURL = async () => {
     setUrlValue("");
     await api.createLink(urlValue).then((data) => {
-      const { id, url, shortCode } = data;
-      const urlString = new URL(url);
+      const { id } = data;
       const newLink = {
         id,
-        url,
-        formattedUrl: `${urlString.hostname}/${shortCode}`,
+        shortUrl: data.shortUrl,
       };
       setFormattedLinks([...formattedLinks, newLink]);
     });

@@ -10,6 +10,7 @@ export const Link = z.object({
   id: z.string(),
   url: z.url(),
   shortCode: z.string(),
+  shortUrl: z.url(),
   createdAt: z.string(),
 });
 
