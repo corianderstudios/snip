@@ -15,7 +15,7 @@ export default function URLInput({ handleCreateURL, urlValue, setUrlValue }) {
         value={urlValue}
         onChange={(e) => setUrlValue(e.target.value)}
       />
-      <button type="submit">Submit</button>
+      <button type="submit">+ shorten link</button>
     </form>
   );
 }

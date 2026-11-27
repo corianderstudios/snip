@@ -1,7 +1,6 @@
-import { MdOutlineOfflineBolt } from "react-icons/md";
 import { api } from "../api";
 
-export default function Link({ id, formattedUrl, setFormattedLinks }) {
+export default function Link({ id, shortUrl, setFormattedLinks }) {
   const handleDeleteLink = async (id) => {
     try {
       await api.deleteLink(id);
@@ -13,8 +12,9 @@ export default function Link({ id, formattedUrl, setFormattedLinks }) {
 
   return (
     <li>
-      <MdOutlineOfflineBolt size={20} />
-      <a>{formattedUrl}</a>
+      <a href={shortUrl} target="_blank" rel="noreferrer">
+        {shortUrl}
+      </a>
       <button onClick={() => handleDeleteLink(id)}>X</button>
     </li>
   );

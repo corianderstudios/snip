@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "./api";
-import Link from "./components/Link";
+import LinkContainer from "./components/Link";
 import URLInput from "./components/URLInput";
 
 const normalizeData = (data) => {
@@ -37,23 +37,17 @@ export default function App() {
   return (
     <div>
       <h1>Snip</h1>
-      <h3>link shortener</h3>
       <URLInput
         handleCreateURL={handleCreateURL}
         urlValue={urlValue}
         setUrlValue={setUrlValue}
       />
-      <ul>
-        {formattedLinks.map(({ id, url, shortUrl }) => (
-          <Link
-            key={id}
-            id={id}
-            url={url}
-            formattedUrl={shortUrl}
-            setFormattedLinks={setFormattedLinks}
-          />
-        ))}
-      </ul>
+      {formattedLinks && (
+        <LinkContainer
+          formattedLinks={formattedLinks}
+          setFormattedLinks={setFormattedLinks}
+        />
+      )}
     </div>
   );
 }
