@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { api } from "./api";
-import Link from "./components/Link";
+import LinkContainer from "./components/Link";
 import URLInput from "./components/URLInput";
 
 const normalizeData = (data) => {
-  const urlString = new URL(data.url);
   return {
     id: data.id,
-    url: data.url,
-    formattedUrl: `${urlString.hostname}/${data.shortCode}`,
+    shortUrl: data.shortUrl,
   };
 };
 
@@ -19,12 +17,10 @@ export default function App() {
   const handleCreateURL = async () => {
     setUrlValue("");
     await api.createLink(urlValue).then((data) => {
-      const { id, url, shortCode } = data;
-      const urlString = new URL(url);
+      const { id } = data;
       const newLink = {
         id,
-        url,
-        formattedUrl: `${urlString.hostname}/${shortCode}`,
+        shortUrl: data.shortUrl,
       };
       setFormattedLinks([...formattedLinks, newLink]);
     });
@@ -41,23 +37,17 @@ export default function App() {
   return (
     <div>
       <h1>Snip</h1>
-      <h3>link shortener</h3>
       <URLInput
         handleCreateURL={handleCreateURL}
         urlValue={urlValue}
         setUrlValue={setUrlValue}
       />
-      <ul>
-        {formattedLinks.map(({ id, url, formattedUrl }) => (
-          <Link
-            key={id}
-            id={id}
-            url={url}
-            formattedUrl={formattedUrl}
-            setFormattedLinks={setFormattedLinks}
-          />
-        ))}
-      </ul>
+      {formattedLinks && (
+        <LinkContainer
+          formattedLinks={formattedLinks}
+          setFormattedLinks={setFormattedLinks}
+        />
+      )}
     </div>
   );
 }

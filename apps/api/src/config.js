@@ -3,6 +3,7 @@ import { z } from "zod";
 // Everything in process.env is a string, so PORT is coerced to a number.
 const Env = z.object({
   DATABASE_URL: z.url(),
+  PUBLIC_BASE_URL: z.url().default("http://localhost:3000"),
   PORT: z.coerce.number().int().positive().default(3000),
   NODE_ENV: z
     .enum(["development", "test", "production"])
