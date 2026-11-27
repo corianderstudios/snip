@@ -20,7 +20,9 @@ export function validateBody(schema) {
 export function validateParams(schema) {
   return (req, res, next) => {
     const parsed = schema.safeParse(req.params);
-    if (!parsed.success) return res.status(404).end();
+    if (!parsed.success) {
+      return res.status(404).json({ error: "Invalid link id" });
+    }
     req.params = parsed.data;
     next();
   };
