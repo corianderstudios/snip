@@ -3,6 +3,15 @@ import { api } from "./api";
 import Link from "./components/Link";
 import URLInput from "./components/URLInput";
 
+const normalizeData = (data) => {
+  const urlString = new URL(data.url);
+  return {
+    id: data.id,
+    url: data.url,
+    formattedUrl: `${urlString.hostname}/${data.shortCode}`,
+  };
+};
+
 export default function App() {
   const [urlValue, setUrlValue] = useState("");
   const [formattedLinks, setFormattedLinks] = useState([]);
@@ -24,8 +33,7 @@ export default function App() {
   useEffect(() => {
     async function getLinks() {
       const response = await api.listLinks();
-      console.log("response", response);
-      // setFormattedLinks(...response);
+      setFormattedLinks(response.map(normalizeData));
     }
     getLinks();
   }, []);
